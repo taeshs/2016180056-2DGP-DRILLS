@@ -4,6 +4,8 @@ import random
 KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 
 
+
+
 def handle_events():
     global running
     global x, y
@@ -17,8 +19,8 @@ def handle_events():
 
 
 def setxy(t, p1, p2, p3, p4):
+    global frame
     global x, y
-
     x = ((-t ** 3 + 2 * t ** 2 - t) * p[p1][0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p[p2][0] + (
             -3 * t ** 3 + 4 * t ** 2 + t) * p[p3][0] + (t ** 3 - t ** 2) * p[p4][0]) / 2
     y = ((-t ** 3 + 2 * t ** 2 - t) * p[p1][1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p[p2][1] + (
@@ -28,9 +30,11 @@ def setxy(t, p1, p2, p3, p4):
     else:
         dir = 100
     draw_xy(x, y, dir)
+    frame = (frame + 1) % 8
 
 
 def draw_curve_4_points():
+
     # draw p1-p2
     for i in range(0, 100, 2):
         t = i / 100
@@ -75,12 +79,11 @@ def draw_curve_4_points():
 
 
 def draw_xy(x, y, dir):
-    frame = 0
     clear_canvas()
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
     character.clip_draw(frame * 100, dir, 100, 100, x, y)
     update_canvas()
-    frame = (frame + 1) % 8
+
     delay(0.01)
 
 
@@ -93,6 +96,7 @@ p = [(random.randint(0, KPU_WIDTH), random.randint(0, KPU_HEIGHT)) for i in rang
 running = True
 x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
 dir = 100
+frame = 0
 
 hide_cursor()
 
