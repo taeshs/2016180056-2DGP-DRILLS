@@ -43,6 +43,30 @@ def draw_curve_4_points():
         t = i / 100
         setxy(t, 2, 3, 4, 5)
 
+    for i in range(0, 100, 2):
+        t = i / 100
+        setxy(t, 3, 4, 5, 6)
+
+    for i in range(0, 100, 2):
+        t = i / 100
+        setxy(t, 4, 5, 6, 7)
+
+    for i in range(0, 100, 2):
+        t = i / 100
+        setxy(t, 5, 6, 7, 8)
+
+    for i in range(0, 100, 2):
+        t = i / 100
+        setxy(t, 6, 7, 8, 9)
+
+    for i in range(0, 100, 2):
+        t = i / 100
+        setxy(t, 7, 8, 9, 0)
+
+    for i in range(0, 100, 2):
+        t = i / 100
+        setxy(t, 8, 9, 0, 1)
+
 
 
 def draw_xy(x, y):
@@ -52,6 +76,7 @@ def draw_xy(x, y):
     character.clip_draw(frame * 100, dir, 100, 100, x, y)
     update_canvas()
     frame = (frame + 1) % 8
+    delay(0)
 
 
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
