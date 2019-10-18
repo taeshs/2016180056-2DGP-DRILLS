@@ -32,9 +32,10 @@ def handle_events():
 def draw():
     global dtime
     clear_canvas()
+    main_state.grass.draw()
+    main_state.boy.draw()
     if(dtime < 0.5):
         image.draw(400, 300)
-    main_state.draw()
     update_canvas()
     delay(0.01)
     dtime = (dtime + 0.01) % 1
