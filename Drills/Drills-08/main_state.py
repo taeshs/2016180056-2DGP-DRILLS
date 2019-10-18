@@ -63,7 +63,7 @@ def pause():
 
 
 def resume():
-    pass
+    draw()
 
 
 def handle_events():
