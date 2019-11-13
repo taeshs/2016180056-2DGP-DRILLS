@@ -9,6 +9,7 @@ import game_world
 from boy import Boy
 from grass import Grass
 from ball import Ball, BigBall
+from platform import Platform
 
 name = "MainState"
 
@@ -38,6 +39,10 @@ def enter():
     global grass
     grass = Grass()
     game_world.add_object(grass, 0)
+
+    global platform
+    platform = Platform()
+    game_world.add_object(platform, 0)
 
     global balls
     balls = [Ball() for i in range(10)] + [BigBall() for i in range(10)]
@@ -77,6 +82,9 @@ def update():
     for ball in balls:
         if collide(grass, ball):
             ball.stop()
+    for ball in balls:
+        if collide(platform, ball):
+            ball.isonplat = True
 
 
 def draw():
