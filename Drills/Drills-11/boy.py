@@ -19,7 +19,7 @@ FRAMES_PER_ACTION = 8
 
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE = range(6)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE, JUMP = range(7)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -44,17 +44,25 @@ class IdleState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+        elif event == SPACE:
+            boy.jumping = 1
         boy.timer = 1000
 
     @staticmethod
     def exit(boy, event):
-        if event == SPACE:
-            boy.fire_ball()
         pass
 
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        if boy.jumping == 1:
+            if boy.y < 290:
+                boy.y += RUN_SPEED_PPS * game_framework.frame_time
+            else:
+                boy.jumping = 0
+        else:
+            if boy.y > 90:
+                boy.y -= RUN_SPEED_PPS * game_framework.frame_time
         boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
@@ -79,18 +87,27 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+        elif event == SPACE:
+            boy.jumping = 1
         boy.dir = clamp(-1, boy.velocity, 1)
 
     @staticmethod
     def exit(boy, event):
-        if event == SPACE:
-            boy.fire_ball()
+        pass
 
     @staticmethod
     def do(boy):
         #boy.frame = (boy.frame + 1) % 8
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
+        if boy.jumping == 1:
+            if boy.y < 290:
+                boy.y += RUN_SPEED_PPS * game_framework.frame_time
+            else:
+                boy.jumping = 0
+        else:
+            if boy.y > 90:
+                boy.y -= RUN_SPEED_PPS * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
 
     @staticmethod
@@ -143,18 +160,13 @@ class Boy:
         self.dir = 1
         self.velocity = 0
         self.frame = 0
+        self.jumping = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
-
-
-    def fire_ball(self):
-        ball = Ball(self.x, self.y, self.dir * RUN_SPEED_PPS * 10)
-        game_world.add_object(ball, 1)
-
 
     def add_event(self, event):
         self.event_que.insert(0, event)

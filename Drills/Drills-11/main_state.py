@@ -78,8 +78,6 @@ def update():
         if collide(grass, ball):
             ball.stop()
 
-    delay(0.9)
-
 
 def draw():
     clear_canvas()
