@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 from ball import Ball
+import main_state
 
 import game_world
 
@@ -55,6 +56,9 @@ class IdleState:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        if boy.isonplat:
+            boy.y = main_state.platform.y + 50
+            boy.x += main_state.platform.velocity
         if boy.jumping == 1:
             if boy.y < 290:
                 boy.y += RUN_SPEED_PPS * game_framework.frame_time
@@ -98,6 +102,9 @@ class RunState:
     @staticmethod
     def do(boy):
         #boy.frame = (boy.frame + 1) % 8
+        if boy.isonplat:
+            boy.y = main_state.platform.y + 50
+            boy.x += main_state.platform.velocity
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
         if boy.jumping == 1:
@@ -130,6 +137,9 @@ class SleepState:
 
     @staticmethod
     def do(boy):
+        if boy.isonplat:
+            boy.y = main_state.platform.y + 50
+            boy.x += main_state.platform.velocity
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
@@ -160,6 +170,7 @@ class Boy:
         self.dir = 1
         self.velocity = 0
         self.frame = 0
+        self.isonplat = False
         self.jumping = 0
         self.event_que = []
         self.cur_state = IdleState

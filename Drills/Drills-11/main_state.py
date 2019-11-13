@@ -87,6 +87,8 @@ def update():
             if platform.y + 20 < ball.y:
                 if collide(platform, ball):
                     ball.isonplat = True
+    if collide(platform, boy):
+        boy.isonplat = True
 
 
 def draw():
