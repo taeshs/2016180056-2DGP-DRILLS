@@ -56,17 +56,6 @@ class IdleState:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        if boy.isonplat:
-            boy.y = main_state.platform.y + 50
-            boy.x += main_state.platform.velocity
-        if boy.jumping == 1:
-            if boy.y < 290:
-                boy.y += RUN_SPEED_PPS * game_framework.frame_time
-            else:
-                boy.jumping = 0
-        else:
-            if boy.y > 90:
-                boy.y -= RUN_SPEED_PPS * game_framework.frame_time
         boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
@@ -102,19 +91,8 @@ class RunState:
     @staticmethod
     def do(boy):
         #boy.frame = (boy.frame + 1) % 8
-        if boy.isonplat:
-            boy.y = main_state.platform.y + 50
-            boy.x += main_state.platform.velocity
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
-        if boy.jumping == 1:
-            if boy.y < 290:
-                boy.y += RUN_SPEED_PPS * game_framework.frame_time
-            else:
-                boy.jumping = 0
-        else:
-            if boy.y > 90:
-                boy.y -= RUN_SPEED_PPS * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
 
     @staticmethod
@@ -137,9 +115,6 @@ class SleepState:
 
     @staticmethod
     def do(boy):
-        if boy.isonplat:
-            boy.y = main_state.platform.y + 50
-            boy.x += main_state.platform.velocity
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
@@ -177,7 +152,7 @@ class Boy:
         self.cur_state.enter(self, None)
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.x - 30, self.y - 50, self.x + 30, self.y + 50
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -189,6 +164,18 @@ class Boy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+        if self.jumping == 1:
+            if self.y < 290:
+                self.y += RUN_SPEED_PPS * game_framework.frame_time
+            else:
+                self.jumping = 0
+        else:
+            if self.y > 90:
+                self.y -= RUN_SPEED_PPS * game_framework.frame_time
+        if self.isonplat:
+            self.y = main_state.platform.y + 50
+            self.x += main_state.platform.velocity
+
 
     def draw(self):
         self.cur_state.draw(self)
