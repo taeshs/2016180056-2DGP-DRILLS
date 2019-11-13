@@ -6,16 +6,18 @@ class Platform:
         self.image = load_image('brick180x40.png')
         self.x, self.y = 800, 200
         self.dir = 1
+        self.velocity = 1
 
     def update(self):
         if self.dir == 1:
-            self.x += 1
+            self.velocity = 1
             if self.x > 1200 - 90:
                 self.dir = 0
         if self.dir == 0:
-            self.x -= 1
+            self.velocity = -1
             if self.x < 0 + 90:
                 self.dir = 1
+        self.x += self.velocity
 
     def draw(self):
         self.image.draw(self.x, self.y)

@@ -2,7 +2,7 @@ import random
 from pico2d import *
 import game_world
 import game_framework
-from platform import Platform
+import main_state
 
 class Ball:
     image = None
@@ -22,7 +22,8 @@ class Ball:
 
     def update(self):
         if self.isonplat:
-            self.y ==
+            self.y == main_state.platform.y
+            self.x += main_state.platform.velocity
         else:
             self.y -= self.fall_speed * game_framework.frame_time
         self.y = clamp(50 + 20, self.y, 600)
@@ -41,6 +42,7 @@ class BigBall(Ball):
         if BigBall.image == None:
             BigBall.image = load_image('ball41x41.png')
         self.x, self.y = random.randint(0, 1600-1), 500
+        self.isonplat = False
         self.fall_speed = random.randint(BigBall.MIN_FALL_SPEED,
                                          BigBall.MAX_FALL_SPEED)
 
