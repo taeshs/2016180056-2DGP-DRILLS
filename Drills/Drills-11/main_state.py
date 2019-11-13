@@ -83,8 +83,10 @@ def update():
         if collide(grass, ball):
             ball.stop()
     for ball in balls:
-        if collide(platform, ball):
-            ball.isonplat = True
+        if platform.x - 90 < ball.x < platform.x + 90:
+            if platform.y + 20 < ball.y:
+                if collide(platform, ball):
+                    ball.isonplat = True
 
 
 def draw():

@@ -10,7 +10,7 @@ class Ball:
     def __init__(self):
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
-        self.x, self.y, self.fall_speed = random.randint(0, 1600-1), 60, 0
+        self.x, self.y, self.fall_speed = random.randint(0, 1200-1), 60, 0
         self.isonplat = False
 
     def get_bb(self):
@@ -22,11 +22,11 @@ class Ball:
 
     def update(self):
         if self.isonplat:
-            self.y == main_state.platform.y
+            self.y = main_state.platform.y + 40
             self.x += main_state.platform.velocity
         else:
             self.y -= self.fall_speed * game_framework.frame_time
-        self.y = clamp(50 + 20, self.y, 600)
+            self.y = clamp(50 + 20, self.y, 600)
 
     def stop(self):
         self.fall_speed = 0
@@ -41,7 +41,7 @@ class BigBall(Ball):
     def __init__(self):
         if BigBall.image == None:
             BigBall.image = load_image('ball41x41.png')
-        self.x, self.y = random.randint(0, 1600-1), 500
+        self.x, self.y = random.randint(0, 1200-1), 500
         self.isonplat = False
         self.fall_speed = random.randint(BigBall.MIN_FALL_SPEED,
                                          BigBall.MAX_FALL_SPEED)
