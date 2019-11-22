@@ -9,7 +9,7 @@ import game_world
 from boy import Boy
 from ground import Ground
 from zombie import Zombie
-
+from ball import Ball, BigBall
 
 name = "MainState"
 
@@ -30,9 +30,16 @@ def collide(a, b):
     return True
 
 
-
 def get_boy():
     return boy
+
+
+def get_balls():
+    return balls
+
+
+def get_bigballs():
+    return bigballs
 
 
 def enter():
@@ -44,11 +51,21 @@ def enter():
     zombie = Zombie()
     game_world.add_object(zombie, 1)
 
+    global balls
+    balls = [Ball() for i in range(5)]
+    game_world.add_objects(balls, 1)
+
+    global bigballs
+    bigballs = [BigBall() for i in range(5)]
+    game_world.add_objects(bigballs, 1)
+
     ground = Ground()
     game_world.add_object(ground, 0)
 
+
 def exit():
     game_world.clear()
+
 
 def pause():
     pass
@@ -64,7 +81,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                game_framework.quit()
+            game_framework.quit()
         else:
             boy.handle_event(event)
 
@@ -72,6 +89,11 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+    for ball in balls:
+        if collide(zombie, ball):
+            print("COLLISION")
+            balls.remove(ball)
+            game_world.remove_object(ball)
 
 
 def draw():
@@ -79,9 +101,3 @@ def draw():
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()
-
-
-
-
-
-
