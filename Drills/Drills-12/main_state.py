@@ -104,7 +104,7 @@ def update():
             game_world.remove_object(bigball)
 
     if collide(boy, zombie):
-        if boy.hp > zombie.hp:
+        if zombie.hp == 1500:
             game_world.remove_object(zombie)
         else:
             game_world.remove_object(boy)
