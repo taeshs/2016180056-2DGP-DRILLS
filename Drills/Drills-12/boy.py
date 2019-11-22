@@ -109,6 +109,7 @@ class Boy:
         self.image = load_image('animation_sheet.png')
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
+        self.hp = 500
         self.x_velocity, self.y_velocity = 0, 0
         self.frame = 0
         self.event_que = []
@@ -133,6 +134,7 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
+        self.font.draw(self.x - 60, self.y + 70, '(HP: %d)' % self.hp, (255, 255, 0))
         self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255, 255, 0))
         #fill here
         draw_rectangle(*self.get_bb())

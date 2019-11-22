@@ -38,10 +38,11 @@ class Zombie:
         for p in positions:
             self.patrol_positions.append((p[0], 1024 - p[1])) # convert for orgin at bottom, left
         self.patrol_order = 1
+        self.font = load_font('ENCR10B.TTF', 16)
         self.target_x, self.target_y = None, None
         self.x, self.y = self.patrol_positions[0]
         self.first = 0
-        
+        self.hp = 0
         self.load_images()
         self.dir = random.random()*2*math.pi # random moving direction
         self.speed = 0
@@ -163,6 +164,7 @@ class Zombie:
 
 
     def draw(self):
+        self.font.draw(self.x - 60, self.y + 50, '(HP: %d)' % self.hp, (255, 255, 0))
         if math.cos(self.dir) < 0:
             if self.speed == 0:
                 Zombie.images['Idle'][int(self.frame)].composite_draw(0, 'h', self.x, self.y, 100, 100)

@@ -92,15 +92,23 @@ def update():
     for ball in balls:
         if collide(zombie, ball):
             print("COLLISION")
-            zombie.
+            zombie.hp += 50
             balls.remove(ball)
             game_world.remove_object(ball)
 
     for bigball in bigballs:
         if collide(zombie, bigball):
             print("COLLISION")
+            zombie.hp += 100
             bigballs.remove(bigball)
             game_world.remove_object(bigball)
+
+    if collide(boy, zombie):
+        if boy.hp > zombie.hp:
+            game_world.remove_object(zombie)
+        else:
+            game_world.remove_object(boy)
+
 
 
 def draw():
