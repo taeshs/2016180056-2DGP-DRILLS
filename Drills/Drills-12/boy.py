@@ -104,7 +104,7 @@ next_state_table = {
 class Boy:
 
     def __init__(self):
-        self.x, self.y = 1280 // 2, 1024 // 2
+        self.x, self.y = 1280 // 2, 800 // 2
         # Boy is only once created, so instance image loading is fine
         self.image = load_image('animation_sheet.png')
         self.font = load_font('ENCR10B.TTF', 16)
