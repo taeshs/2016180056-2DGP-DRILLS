@@ -12,6 +12,7 @@ import world_build_state
 name = "Ranking_state"
 
 font = load_font("ENCR10B.TTF", 20)
+
 time_ls = []
 
 def enter():
